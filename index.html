@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sticky Notes App using JavaScript</title>
+
+    <link rel="stylesheet" type="text/css" href="style/style.css">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
+        integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+</head>
+
+<body>
+    <div class="container">
+        <div class="notes">
+            <div id="create">
+                <i class="fa-solid fa-plus"></i>
+                <div class="createBox">
+                    <div class="innerCreateBox">
+                        <textarea placeholder="Write Here ..." id="userInput" maxlength="160"></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let createBox = document.getElementsByClassName('createBox')[0];
+        let notes = document.getElementsByClassName('notes')[0];
+        let input = document.getElementById('userInput');
+        let i = 0;
+
+        // Attach event listener for 'Enter' key
+        createBox.addEventListener('keyup', content);
+
+        // Show the create box when the plus icon is clicked
+        document.getElementById("create").addEventListener("click", function () {
+            createBox.style.display = "block";
+        });
+
+        // Function to detect 'Enter' key and create a new note
+        function content(e) {
+            if (e.keyCode == 13) {  // Check for 'Enter' key (key code 13)
+                divStyle(input.value);  // Pass the input value to the divStyle function
+                input.value = "";  // Clear the input field after creating the note
+                createBox.style.display = "none";  // Hide the createBox
+            }
+        }
+
+        // Generate a random background color for the note
+        function color() {
+            let randomColors = ["#c2ff3d", "#ff3de8", "#3dc2ff", "#04e022", "#bc83e6", "#ebb328"];
+            if (i > randomColors.length - 1) {
+                i = 0;  // Reset the index if it exceeds the array length
+            }
+            return randomColors[i++];  // Return the next color and increment the index
+        }
+
+        // Create the note div and add it to the DOM
+        function divStyle(text) {
+            let div = document.createElement("div");
+            div.className = 'note';
+            div.innerHTML = '<div class="details"><h3>' + text + '</h3></div>';  // Corrected closing </h3> tag
+
+            // Remove note on double-click
+            div.addEventListener("dblclick", function () {
+                div.remove();  // Remove the note when double-clicked
+            });
+
+            // Assign a random background color
+            div.style.background = color();
+
+            // Append the note to the notes container
+            notes.appendChild(div);
+        }
+    </script>
+
+</body>
+
+</html>
